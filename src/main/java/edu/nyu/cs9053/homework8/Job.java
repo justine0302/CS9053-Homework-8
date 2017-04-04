@@ -6,6 +6,5 @@ public interface Job {
 
     Double getStartTime();
     Double getFinishTime();
-    int getLabel();
 
 }

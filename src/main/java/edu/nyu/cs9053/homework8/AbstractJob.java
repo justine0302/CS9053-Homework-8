@@ -4,24 +4,18 @@ public abstract class AbstractJob implements Job{
 
     private final Double startTime;
     private final Double finishTime;
-    private final int label;
 
-    public AbstractJob(Double startTime, Double finishTime, int label){
+    public AbstractJob(Double startTime, Double finishTime){
         this.startTime = startTime;
         this.finishTime = finishTime;
-        this.label = label;
     }
 
-    public Double getFinishTime(){
+    @Override public Double getFinishTime(){
         return finishTime;
     }
 
-    public Double getStartTime(){
+    @Override public Double getStartTime(){
         return startTime;
-    }
-
-    public int getLabel(){
-        return label;
     }
 
 }
