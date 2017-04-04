@@ -13,12 +13,12 @@ public class LambdaWeightedScheduler {
 
     private final ArrayList<LambdaWeightedJob> jobs;
 
-    public LambdaWeightedScheduler(Job[] jobs){
-        this.jobs = new ArrayList(Arrays.asList(jobs));
+    public LambdaWeightedScheduler(LambdaWeightedJob[] jobs){
+        this.jobs = new ArrayList<LambdaWeightedJob>(Arrays.asList(jobs));
     }
 
     public LambdaWeightedScheduler(Collection<LambdaWeightedJob> jobs){
-        this.jobs = new ArrayList(jobs);
+        this.jobs = new ArrayList<LambdaWeightedJob>(jobs);
     }
     
     private void sortJobs(){

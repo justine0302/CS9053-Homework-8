@@ -4,8 +4,8 @@ import java.util.*;
 
 public class Test{
     public static void main(String args[]){
-        Job jobArray[] = { new LambdaWeightedJob(3.0,5.0,20.0),  new LambdaWeightedJob(1.0,2.0,50.0),
-            new LambdaWeightedJob(6.0,19.0,100.0), new LambdaWeightedJob(2.0,100.0,200.0)};
+        LambdaWeightedJob jobArray[] = { new LambdaWeightedJob(1.0,5.0,100.0),  new LambdaWeightedJob(1.0,2.0,50.0),
+            new LambdaWeightedJob(6.0,19.0,120.0), new LambdaWeightedJob(2.0,100.0,50.0)};
 
         LambdaWeightedScheduler s = new LambdaWeightedScheduler(jobArray);
         ArrayList<LambdaWeightedJob> result = s.schedule();

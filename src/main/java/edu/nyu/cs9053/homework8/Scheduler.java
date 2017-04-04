@@ -4,9 +4,10 @@ import java.util.*;
 
 public abstract class Scheduler {
 
+    /* Solved with greedy algorithm */
     public static ArrayList<LambdaJob> findMaxJobSubset(ArrayList<LambdaJob> jobs){
 
-        ArrayList<LambdaJob> scheduledJob = new ArrayList<>();
+        ArrayList<LambdaJob> scheduledJob = new ArrayList<LambdaJob>();
 
         int i = 0;
         scheduledJob.add(jobs.get(0));
@@ -21,7 +22,20 @@ public abstract class Scheduler {
         return scheduledJob;
     }
 
-    
+    /* Calculate the maximum profit by choosing the maximum profit of the two profits:
+        (1) Maximum profit by excluding the job
+        (2) Maximum profit by including the job
+
+       Solved with dynamic programming:
+
+        Assume jobs are already sorted by finish time.
+        dp[i] means the maximum profit of a set of non-overlapping i jobs
+        * initialize: dp[0] = jobs[0].weight
+        * transit state:
+            dp[i] = Math.max(dp[i - 1], dp[p[i - 1]] + jobs[i].weight), 
+            where the p[i - 1] is the index with the finish time that is closest to the start time of jobs[i]
+        * final state: dp[jobs.size - 1]
+    */
     public static ArrayList<LambdaWeightedJob> findMaxProfit(ArrayList<LambdaWeightedJob> jobs){
 
         //Store the jobs selected at each state
@@ -48,9 +62,8 @@ public abstract class Scheduler {
                 dp[i] = choose;
                 ArrayList<LambdaWeightedJob> currentJob = new ArrayList<LambdaWeightedJob>();
                 if(idx != -1){
-                    currentJob = (ArrayList<LambdaWeightedJob>) scheduledJob.get(idx).clone();
+                    currentJob = new ArrayList<LambdaWeightedJob>(scheduledJob.get(idx));
                 }
-
                 currentJob.add(jobs.get(i));
                 scheduledJob.set(i, currentJob);
             }
@@ -63,14 +76,7 @@ public abstract class Scheduler {
         return scheduledJob.get(jobs.size() - 1);
     }
 
-    private static void printJob(ArrayList<ArrayList<LambdaWeightedJob>> jobsList){
-        for(ArrayList<LambdaWeightedJob> jobs : jobsList){
-        for(LambdaWeightedJob j : jobs){
-            System.out.print(j.getWeight()+" ");
-        }
-        System.out.println();
-    }
-    }
+
     private static int latestNonConflict(ArrayList<LambdaWeightedJob> jobs, int i){
 
         for (int j = i - 1; j >= 0; j--){
