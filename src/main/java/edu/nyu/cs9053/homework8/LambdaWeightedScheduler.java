@@ -11,23 +11,16 @@ public class LambdaWeightedScheduler<T extends LambdaWeightedJob> extends Abstra
             }
     };
 
-    public LambdaWeightedScheduler(Collection<T> jobs){
-        super(jobs);
-    }
-
-    public LambdaWeightedScheduler(T[] jobs){
-        super(jobs);
-    }
-
-    private void sortJobs(){
-        Collections.sort(super.getJobs(), FINISHTIME_ORDER);
-    }
-
-    @Override public ArrayList<T> schedule(){
-        sortJobs();
-        ArrayList<T> scheduledJob = findMaxProfit(super.getJobs());
+    @Override public ArrayList<T> schedule(ArrayList<T> jobs){
+        if(jobs == null){
+            throw new IllegalArgumentException();
+        }
+        Collections.sort(jobs, FINISHTIME_ORDER);
+        ArrayList<T> scheduledJob = findMaxProfit(jobs);
         return scheduledJob;
     }
+
+
 
     /* Calculate the maximum profit by choosing the maximum profit of the two profits:
         (1) Maximum profit by excluding the job

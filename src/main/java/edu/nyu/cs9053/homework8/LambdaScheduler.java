@@ -10,22 +10,13 @@ public class LambdaScheduler<T extends LambdaJob> extends AbstractScheduler<T>{
                 return j1.getFinishTime().compareTo(j2.getFinishTime());
             }
     };
-    
-    private void sortJobs(){
-        Collections.sort(super.getJobs(), FINISHTIME_ORDER);
-    }
-    
-    public LambdaScheduler(Collection<T> jobs){
-        super(jobs);
-    }
 
-    public LambdaScheduler(T[] jobs){
-        super(jobs);
-    }
-
-    @Override public ArrayList<T> schedule(){
-        sortJobs();
-        ArrayList<T> scheduledJob = findMaxJobSubset(super.getJobs());
+    @Override public ArrayList<T> schedule(ArrayList<T> jobs){
+        if(jobs == null){
+            throw new IllegalArgumentException();
+        }
+        Collections.sort(jobs, FINISHTIME_ORDER);
+        ArrayList<T> scheduledJob = findMaxJobSubset(jobs);
         return scheduledJob;
     }
 
@@ -43,7 +34,6 @@ public class LambdaScheduler<T extends LambdaJob> extends AbstractScheduler<T>{
               i = j;
             }
         }
-
         return scheduledJob;
     }
 
