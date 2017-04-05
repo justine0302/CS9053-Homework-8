@@ -2,30 +2,23 @@ package edu.nyu.cs9053.homework8;
 
 import java.util.*;
 
-public class LambdaWeightedScheduler<T extends LambdaWeightedJob> extends AbstractScheduler<T>{
+public abstract class SchedulerAlgorithm {
 
-    private static final Comparator<LambdaWeightedJob> FINISHTIME_ORDER = 
-                                        new Comparator<LambdaWeightedJob>() {
-            public int compare(LambdaWeightedJob j1, LambdaWeightedJob j2) {
-                return j1.getFinishTime().compareTo(j2.getFinishTime());
+    /* Solved with greedy algorithm */
+    public static ArrayList<LambdaJob> findMaxJobSubset(ArrayList<? extends LambdaJob> jobs){
+
+        ArrayList<LambdaJob> scheduledJob = new ArrayList<LambdaJob>();
+
+        int i = 0;
+        scheduledJob.add(jobs.get(0));
+        for(int j = 1; j < jobs.size(); j++){
+            if (jobs.get(j).getStartTime() >= jobs.get(i).getFinishTime())
+            {
+              scheduledJob.add(jobs.get(j));
+              i = j;
             }
-    };
+        }
 
-    public LambdaWeightedScheduler(Collection<T> jobs){
-        super(jobs);
-    }
-
-    public LambdaWeightedScheduler(T[] jobs){
-        super(jobs);
-    }
-
-    private void sortJobs(){
-        Collections.sort(super.getJobs(), FINISHTIME_ORDER);
-    }
-
-    @Override public ArrayList<T> schedule(){
-        sortJobs();
-        ArrayList<T> scheduledJob = findMaxProfit(super.getJobs());
         return scheduledJob;
     }
 
@@ -43,13 +36,13 @@ public class LambdaWeightedScheduler<T extends LambdaWeightedJob> extends Abstra
             where the p[i - 1] is the index with the finish time that is closest to the start time of jobs[i]
         * final state: dp[jobs.size - 1]
     */
-    public ArrayList<T> findMaxProfit(ArrayList<T> jobs){
+    public static ArrayList<LambdaWeightedJob> findMaxProfit(ArrayList<LambdaWeightedJob> jobs){
 
         //Store the jobs selected at each state
-        ArrayList<ArrayList<T>> scheduledJob = new ArrayList<ArrayList<T>>(jobs.size());
+        ArrayList<ArrayList<LambdaWeightedJob>> scheduledJob = new ArrayList<ArrayList<LambdaWeightedJob>>(jobs.size());
 
         for(int i = 0; i < jobs.size(); i++)  {
-            scheduledJob.add(new ArrayList<T>());
+            scheduledJob.add(new ArrayList<LambdaWeightedJob>());
         }
 
         Double[] dp = new Double[jobs.size()];
@@ -67,9 +60,9 @@ public class LambdaWeightedScheduler<T extends LambdaWeightedJob> extends Abstra
 
             if(choose > noChoose){
                 dp[i] = choose;
-                ArrayList<T> currentJob = new ArrayList<T>();
+                ArrayList<LambdaWeightedJob> currentJob = new ArrayList<LambdaWeightedJob>();
                 if(idx != -1){
-                    currentJob = new ArrayList<T>(scheduledJob.get(idx));
+                    currentJob = new ArrayList<LambdaWeightedJob>(scheduledJob.get(idx));
                 }
                 currentJob.add(jobs.get(i));
                 scheduledJob.set(i, currentJob);
@@ -84,7 +77,7 @@ public class LambdaWeightedScheduler<T extends LambdaWeightedJob> extends Abstra
     }
 
 
-    private int latestNonConflict(ArrayList<T> jobs, int i){
+    private static int latestNonConflict(ArrayList<LambdaWeightedJob> jobs, int i){
 
         for (int j = i - 1; j >= 0; j--){
             if (jobs.get(j).getFinishTime() <= jobs.get(i).getStartTime()){
@@ -93,6 +86,5 @@ public class LambdaWeightedScheduler<T extends LambdaWeightedJob> extends Abstra
         }
         return -1;
     }
-
     
 }

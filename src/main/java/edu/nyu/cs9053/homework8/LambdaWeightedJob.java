@@ -6,6 +6,9 @@ public class LambdaWeightedJob extends LambdaJob{
 
     LambdaWeightedJob(Double startTime, Double finishTime, Double weight){
         super(startTime, finishTime);
+        if(weight == null){
+            throw new IllegalArgumentException();
+        }
         this.weight = weight;
     }
 
