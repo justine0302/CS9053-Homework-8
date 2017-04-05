@@ -5,7 +5,10 @@ public abstract class AbstractJob implements Job{
     private final Double startTime;
     private final Double finishTime;
 
-    public AbstractJob(Double startTime, Double finishTime){
+    protected AbstractJob(Double startTime, Double finishTime){
+        if(startTime == null || finishTime == null || startTime >= finishTime){
+            throw new IllegalArgumentException();
+        }
         this.startTime = startTime;
         this.finishTime = finishTime;
     }

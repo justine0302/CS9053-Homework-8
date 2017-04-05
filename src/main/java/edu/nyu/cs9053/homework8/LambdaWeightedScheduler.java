@@ -14,10 +14,16 @@ public class LambdaWeightedScheduler {
     private final ArrayList<LambdaWeightedJob> jobs;
 
     public LambdaWeightedScheduler(LambdaWeightedJob[] jobs){
+        if(jobs.length == 0){
+            throw new IllegalArgumentException();
+        }
         this.jobs = new ArrayList<LambdaWeightedJob>(Arrays.asList(jobs));
     }
 
     public LambdaWeightedScheduler(Collection<LambdaWeightedJob> jobs){
+        if(jobs == null){
+            throw new IllegalArgumentException();
+        }
         this.jobs = new ArrayList<LambdaWeightedJob>(jobs);
     }
     
